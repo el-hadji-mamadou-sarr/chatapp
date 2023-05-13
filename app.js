@@ -12,14 +12,18 @@ app.use(cors({
 const {Server} = require('socket.io');
 const io = new Server(server, {
         cors:{
-                origin:'http://localhost:3000'
+                origin:'http://localhost:3000',
+                methods: ["GET"],
         }
 });
 
+const messaging = require('./realtime/messaging');
+
 io.on('connection', (Socket) =>{
-        Socket.on('message', (message)=>{
-                io.emit('message', message);
-        })
+
+
+        messaging(io, Socket);
+
 })      
 
 server.listen(5000, ()=>{
